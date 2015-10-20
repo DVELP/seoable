@@ -6,6 +6,7 @@ Combustion.initialize! :all
 
 require 'rspec/rails'
 require 'factory_girl_rails'
+require 'shoulda-matchers'
 
 Rails.backtrace_cleaner.remove_silencers!
 
@@ -18,4 +19,11 @@ RSpec.configure do |config|
   config.include FactoryGirl::Syntax::Methods
   config.infer_base_class_for_anonymous_controllers = false
   config.order = 'random'
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
 end

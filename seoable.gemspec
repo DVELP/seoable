@@ -32,5 +32,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'rspec'
   spec.add_development_dependency 'rspec-rails'
+  spec.add_development_dependency 'shoulda-matchers'
   spec.add_development_dependency 'sqlite3'
 end
