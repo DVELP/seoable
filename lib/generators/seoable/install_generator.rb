@@ -14,6 +14,10 @@ module Seoable
                            'db/migrate/create_seo_details.rb'
       end
 
+      def create_initializer
+        copy_file 'initializers/seoable.rb', 'config/initializers/seoable.rb'
+      end
+
       def self.next_migration_number(dirname)
         ActiveRecord::Generators::Base.next_migration_number(dirname)
       end
