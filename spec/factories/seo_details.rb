@@ -1,11 +1,11 @@
 module Seoable
   FactoryGirl.define do
     factory :seo_detail, class: SeoDetail do
-      meta_title 'Page title'
-      slug 'meta-title'
+      sequence(:meta_title) { |n| "Page title #{n}" }
+      sequence(:slug) { |n| "slug-#{n}" }
       meta_description 'page description'
       seoable_type 'Object'
-      seoable_id 1
+      sequence(:seoable_id) { |n| n }
     end
   end
 end

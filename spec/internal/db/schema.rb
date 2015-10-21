@@ -12,4 +12,10 @@ ActiveRecord::Schema.define do
   add_index :seo_details, :seoable_type
   add_index :seo_details, [:seoable_type, :seoable_id], unique: true
   add_index :seo_details, [:seoable_type, :slug], unique: true
+
+  create_table :seoable_classes do |t|
+    t.string :title
+
+    t.timestamps null: false
+  end
 end

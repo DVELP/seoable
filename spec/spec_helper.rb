@@ -6,7 +6,7 @@ Combustion.initialize! :all
 
 require 'rspec/rails'
 require 'factory_girl_rails'
-require 'shoulda-matchers'
+require 'shoulda/matchers'
 
 Rails.backtrace_cleaner.remove_silencers!
 
