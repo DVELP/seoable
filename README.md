@@ -1,41 +1,99 @@
 # Seoable
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/seoable`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Make your ActiveRecords SEO friendly.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+To get started, add Seoable to your `Gemfile`, run `bundle install`, and run the
+`install generator`:
 
-```ruby
-gem 'seoable'
+```sh
+$ rails generate seoable:install
 ```
 
-And then execute:
+The generator:
 
-    $ bundle
+* Creates an initializer to allow further configuration.
+* Creates a migration for seo_details table
 
-Or install it yourself as:
+## Configure
 
-    $ gem install seoable
+Override the defaults in config/initializers/seoable.rb:
+
+```ruby
+Seoable.configure do |config|
+  config.default_title = Rails.application.class.parent_name
+  config.default_description = config.default_title
+  config.sluggable_attributes = [:full_name, :name, :title]
+end
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+Add `include Seoable::ActsAsSeoable` to any ActiveRecord you want to make Seoable:
+
+```ruby
+class Post < ActiveRecord::Base
+  include Seoable::ActsAsSeoable
+end
+```
+
+In your application layout file (probably `app/views/layouts/application.html.erb`):
+
+Replace this line:
+
+```erb
+<title>ApplicationName</title>
+```
+
+With this line:
+
+```erb
+<title><%= seoable_title %></title>
+```
+
+Add the following line below title:
+
+```erb
+<meta name="description" content="<%= seoable_description %>" />
+```
+
+If you’re adding seoable to existing app and want to generate SeoDetails for existing records, perform save for every model that includes ActsAsSeoable. You can do this from the console, runner or add a Rake task. For example:
+
+```ruby
+Post.find_each(&:save)
+```
+
+## Troubleshooting
+
+### Column reference is ambiguous
+
+If you see the error similar to `column reference "id" is ambiguous`, it’s due to including `seo_details` table through default_scope. To fix this, specify table name in your queries, like this:
+
+```ruby
+scope :only_big_ids, -> { where('"posts"."id" > 3') }
+```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rspec` to run the tests.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install the gem with your changes onto your local machine, run `rake install`.
+
+## TODO
+
+You’re more than welcome to send us pull-requests. Here’s the list of TODO items we’re looking to work on in the future:
+
+* Add functionality to set default_title and default_description per model
+* Add title_format configuration variable
+* Create redirect on Seoable model save
+* Add caching
+* Integrate with ActiveAdmin (but have it optional)
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/seoable. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/DVELP/seoable. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
