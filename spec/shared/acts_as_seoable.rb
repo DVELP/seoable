@@ -53,13 +53,6 @@ module Seoable
 
     context 'update model' do
       context 'without seo detail' do
-        before(:each) do
-          described_class.skip_callback(:validation, :before, :build_seo_detail)
-          model_instance.save
-          described_class.set_callback(:validation, :before, :build_seo_detail)
-          expect(model_instance.seo_detail).to be nil
-        end
-
         it 'creates seo detail' do
           expect{model_instance.save}.to change(SeoDetail, :count).by(1)
         end

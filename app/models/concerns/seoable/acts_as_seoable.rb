@@ -16,32 +16,26 @@ module Seoable
               dependent: :destroy,
               class_name: SeoDetail
 
-      accepts_nested_attributes_for :seo_detail
+      accepts_nested_attributes_for :seo_detail, reject_if: :all_blank
 
       delegate :meta_title, to: :seo_detail, allow_nil: true
       delegate :meta_description, to: :seo_detail, allow_nil: true
       delegate :slug, to: :seo_detail, allow_nil: true
+    end
 
-      before_validation :build_seo_detail
+    def seo_detail
+      super || build_seo_detail(seo_detail_attributes)
+    end
+
+    def seo_detail_attributes
+      {
+        meta_title: sluggable,
+        seoable: self,
+        slug: sluggable.to_slug
+      }
     end
 
     private
-
-      def build_seo_detail
-        if seo_detail.blank?
-          super(seo_detail_attributes)
-        else
-          seo_detail.assign_attributes(seo_detail_attributes)
-        end
-      end
-
-      def seo_detail_attributes
-        {
-          meta_title: sluggable,
-          seoable: self,
-          slug: sluggable.to_slug
-        }
-      end
 
       def sluggable
         attribute = Seoable.configuration
