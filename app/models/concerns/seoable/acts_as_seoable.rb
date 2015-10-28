@@ -42,12 +42,7 @@ module Seoable
                     .sluggable_attributes.find do |sluggable_attribute|
                       self.respond_to?(sluggable_attribute)
                     end
-
-        if attribute.present?
-          send(attribute).to_s
-        else
-          Seoable.configuration.sluggable_attributes.first.to_s
-        end
+        send(attribute).to_s
       end
   end
 end
