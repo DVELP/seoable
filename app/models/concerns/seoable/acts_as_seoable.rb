@@ -50,7 +50,7 @@ module Seoable
                     end
 
         if attribute.present?
-          send(attribute)
+          send(attribute).to_s
         else
           Seoable.configuration.sluggable_attributes.first.to_s
         end
