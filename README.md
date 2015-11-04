@@ -109,4 +109,11 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/DVELP/
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+Seoable is copyright of DVELP Ltd. It is free software and available to distribute under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+<br></br>
+[![alt text](https://raw.githubusercontent.com/DVELP/cookbook/master/assets/dvelp-logo.png "DVELP logo")](http://dvelp.co.uk)
+
+Seoable was created and is maintained by DVELP Ltd.
+
+If you like what you see and would like to hire us or join us, [get in touch](http://dvelp.co.uk)!
