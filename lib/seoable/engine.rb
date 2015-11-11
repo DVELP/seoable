@@ -1,4 +1,5 @@
 require 'rails/engine'
+require 'seoable/seo_loader'
 
 module Seoable
   class Engine < ::Rails::Engine
