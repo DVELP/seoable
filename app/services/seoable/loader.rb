@@ -14,7 +14,9 @@ module Seoable
     private
 
       def model
-        @model_name.constantize
+        model = @model_name.constantize
+        model = model.superclass if model.superclass != ActiveRecord::Base
+        model
       end
 
       def seoable_model?
