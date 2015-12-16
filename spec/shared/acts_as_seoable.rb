@@ -8,16 +8,7 @@ module Seoable
     let(:class_sym) { described_class.to_s.underscore.to_sym }
     let(:model_instance) { build(class_sym) }
 
-    context 'validations' do
-      it { is_expected.to accept_nested_attributes_for(:seo_detail) }
-    end
-
-    context 'relations' do
-      it do
-        is_expected.to have_one(:seo_detail)
-          .dependent(:destroy)
-          .class_name('SeoDetail')
-      end
+    context '"relations"' do
       it { is_expected.to delegate_method(:meta_title).to(:seo_detail) }
       it { is_expected.to delegate_method(:meta_description).to(:seo_detail) }
       it { is_expected.to delegate_method(:slug).to(:seo_detail) }
@@ -73,6 +64,28 @@ module Seoable
             expect(model_instance.slug).to eq(slug)
           end
         end
+
+        context "parent model is invalid" do
+          it "keeps associated seo detail intact" do
+            model_instance.save
+            old_seo_detail_id = model_instance.seo_detail.id
+
+            expect(model_instance).to receive(:valid?).and_return false
+
+            new_seo_detail = build(:seo_detail)
+            model_instance.update_attributes({meta_title: new_seo_detail.meta_title})
+
+            expect(SeoDetail.where(id: old_seo_detail_id).first).to be_present
+          end
+        end
+      end
+    end
+
+    context 'destroy' do
+      it 'destroys associated seo_detail' do
+        model_instance.save
+
+        expect { model_instance.destroy }.to change(SeoDetail, :count).by(-1)
       end
     end
   end

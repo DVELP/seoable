@@ -11,20 +11,30 @@ module Seoable
       default_scope { joins_seo_detail }
       scope :joins_seo_detail, -> { includes(:seo_detail) }
 
-      has_one :seo_detail,
-              as: :seoable,
-              dependent: :destroy,
-              class_name: SeoDetail
-
-      accepts_nested_attributes_for :seo_detail, reject_if: :all_blank
-
       delegate :meta_title, to: :seo_detail, allow_nil: true
+      delegate :meta_title=, to: :seo_detail, allow_nil: true
       delegate :meta_description, to: :seo_detail, allow_nil: true
+      delegate :meta_description=, to: :seo_detail, allow_nil: true
       delegate :slug, to: :seo_detail, allow_nil: true
+      delegate :slug=, to: :seo_detail, allow_nil: true
+
+      after_save do
+        seo_detail.save
+      end
+
+      after_destroy do
+        seo_detail.destroy
+      end
+
+      validate do
+        if seo_detail.invalid?
+          errors.add(:seo_detail, :invalid)
+        end
+      end
     end
 
     def seo_detail
-      super || build_seo_detail(seo_detail_attributes)
+      @seo_detail ||= SeoDetail.where(seoable: self).first_or_initialize(seo_detail_attributes)
     end
 
     def seo_detail_attributes
