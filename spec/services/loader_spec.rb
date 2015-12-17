@@ -29,11 +29,10 @@ module Seoable
         end
 
         it 'queries for seo detail' do
-          expect(SeoDetail).to receive(:where)
-            .with(seoable_type: model, slug: slug)
-            .and_return([])
+          allow(SeoDetail).to receive(:with_redirects).and_return([])
 
           subject
+          expect(SeoDetail).to have_received(:with_redirects).with(model, slug)
         end
       end
     end
