@@ -8,7 +8,7 @@ module Seoable
     let(:class_sym) { described_class.to_s.underscore.to_sym }
     let(:model_instance) { build(class_sym) }
 
-    context '"relations"' do
+    context 'relations' do
       it { is_expected.to delegate_method(:meta_title).to(:seo_detail) }
       it { is_expected.to delegate_method(:meta_description).to(:seo_detail) }
       it { is_expected.to delegate_method(:slug).to(:seo_detail) }
@@ -65,8 +65,8 @@ module Seoable
           end
         end
 
-        context "parent model is invalid" do
-          it "keeps associated seo detail intact" do
+        context 'parent model is invalid' do
+          it 'keeps associated seo detail intact' do
             model_instance.save
             old_seo_detail_id = model_instance.seo_detail.id
 
