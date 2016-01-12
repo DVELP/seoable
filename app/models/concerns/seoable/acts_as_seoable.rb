@@ -15,6 +15,20 @@ module Seoable
       delegate :slug, to: :seo_detail, allow_nil: true
       delegate :slug=, to: :seo_detail, allow_nil: true
 
+      default_scope { joins_seo_detail }
+      scope :joins_seo_detail, -> do
+        table_name = self.table_name
+        seoable_type = self.name
+
+        joins(
+            'INNER JOIN "seo_details" ON ' +
+            '"seo_details"."seoable_id" = ' +
+            "\"#{table_name}\".\"id\"" + ' AND ' +
+            '"seo_details"."seoable_type" =' +
+            "'#{seoable_type}'"
+        )
+      end
+
       after_save do
         seo_detail.save
       end
