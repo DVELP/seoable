@@ -8,9 +8,6 @@ module Seoable
       extend FriendlyId
       friendly_id :slug, use: :finders
 
-      default_scope { joins_seo_detail }
-      scope :joins_seo_detail, -> { includes(:seo_detail) }
-
       delegate :meta_title, to: :seo_detail, allow_nil: true
       delegate :meta_title=, to: :seo_detail, allow_nil: true
       delegate :meta_description, to: :seo_detail, allow_nil: true
